@@ -179,10 +179,7 @@ textarea {
   /* Style adjustments for viewports that meet the condition */
 }
 
-@media print,
-  (-webkit-min-device-pixel-ratio: 1.25),
-  (min-resolution: 1.25dppx),
-  (min-resolution: 120dpi) {
+@media print, (-webkit-min-device-pixel-ratio: 1.25), (min-resolution: 1.25dppx), (min-resolution: 120dpi) {
   /* Style adjustments for high resolution devices */
 }
 
@@ -260,4 +257,47 @@ textarea {
     page-break-after: avoid;
   }
 }
+* {
+  box-sizing: border-box;
+}
 
+.image-container {
+  display: inline-block;
+  position: relative;
+  width: auto;
+  height: auto;
+}
+.image-container .bg-img {
+}
+.image-container .text-content {
+  color: #fff;
+  position: absolute;
+  width: 100%;
+  text-align: center;
+  font-weight: bold;
+  padding: 4px;
+}
+.image-container .text-content #event-type {
+  /* font-size: 16px; */
+}
+.image-container .text-content #event-time {
+  /* font-size: 14px; */
+}
+
+@keyframes blink-animation {
+  to {
+    visibility: hidden;
+  }
+}
+@-webkit-keyframes blink-animation {
+  to {
+    visibility: hidden;
+  }
+}
+
+
+.colon {
+  display: inline-block;
+  animation: blink-animation 1s steps(5, start) infinite;
+  -webkit-animation: blink-animation 1s steps(5, start) infinite;
+}
