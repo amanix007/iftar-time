@@ -170,8 +170,8 @@ function init() {
 
     let typeShowTypelist = ["todays_seheri", "todays_iftar", "next_days_seheri"];
 
-    // let CurrentdhakaTimeDate = moment().tz("Asia/Dhaka");
-    let CurrentdhakaTimeDate = moment("2021-04-13T19:33:00.000Z");
+    let CurrentdhakaTimeDate = moment().tz("Asia/Dhaka");
+    // let CurrentdhakaTimeDate = moment("2021-04-13T19:33:00.000Z");
     let CurrentdhakaTimeDateString = moment().format("YYYY-MM-DD");
     console.log('CurrentdhakaTimeDateString:', CurrentdhakaTimeDateString)
 
