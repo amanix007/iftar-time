@@ -161,15 +161,17 @@ var RamdanData = [
 
 var bengaliNumbers = ["০", "১", "২", "৩", "৪", "৫", "৬", "৭", "৮", "৯"];
 
-function init() {
-    // 2011-10-05T14:48:00.000Z
 
-    let typeShowTypelist = ["todays_seheri", "todays_iftar", "next_days_seheri"];
+let dummyTime = moment.utc("2021-04-13T01:00:00.000Z");
+
+function init() {
 
     let CurrentdhakaTimeDate = moment().tz("Asia/Dhaka");
+    // let CurrentdhakaTimeDate = dummyTime;
 
-    // let CurrentdhakaTimeDate = moment("2021-04-13T19:33:00.000Z");
-    let CurrentdhakaTimeDateString = moment().format("YYYY-MM-DD");
+
+
+    let CurrentdhakaTimeDateString = CurrentdhakaTimeDate.format("YYYY-MM-DD");
 
 
 
@@ -254,8 +256,10 @@ function init() {
     function injectDateToDom() {
 
         let nextDataType = getNextTimeType();
-        // console.log('nextDataType:', nextDataType)
+        console.log('nextDataType:', nextDataType)
+
         let CurrentdhakaTimeDate = moment().tz("Asia/Dhaka");
+        // let CurrentdhakaTimeDate = dummyTime;
 
 
         let dhakaTimeIso = moment(CurrentdhakaTimeDate).format("YYYY-MM-DD[T]HH:mm:ss.SSS[Z]")
@@ -266,27 +270,36 @@ function init() {
         if (nextDataType === "todays_seheri") {
             document.getElementById("event-type").innerHTML = "আজকের সেহেরী";
             document.getElementById("event-time").innerHTML = replaceEnglishToBanglaDigitTime(moment.utc(TodaySehriTime).format("hh:mm"));
-            document.getElementById("event-count-down-time").innerHTML = replaceEnglishToBanglaDigitTimeWithSeconds(getFullString(dhakaTimeIso, TodaySehriTime));
+            document.getElementById("event-count-down-time").innerHTML = replaceEnglishToBanglaDigitTimeWithSeconds(getFullString(nextDataType, dhakaTimeIso, TodaySehriTime));
         } else if (nextDataType === "todays_iftar") {
             document.getElementById("event-type").innerHTML = "আজকের ইফতার";
             document.getElementById("event-time").innerHTML = replaceEnglishToBanglaDigitTime(moment.utc(TodayIftarTime).format("hh:mm"));
-            document.getElementById("event-count-down-time").innerHTML = replaceEnglishToBanglaDigitTimeWithSeconds(getFullString(dhakaTimeIso, TodayIftarTime));
+            document.getElementById("event-count-down-time").innerHTML = replaceEnglishToBanglaDigitTimeWithSeconds(getFullString(nextDataType, dhakaTimeIso, TodayIftarTime));
 
         } else if (nextDataType === "next_days_seheri") {
             document.getElementById("event-type").innerHTML = "আগামীকালের সেহেরী";
             document.getElementById("event-time").innerHTML = replaceEnglishToBanglaDigitTime(moment.utc(NextdaySehriTime).format("hh:mm"));
-            document.getElementById("event-count-down-time").innerHTML = replaceEnglishToBanglaDigitTimeWithSeconds(getFullString(dhakaTimeIso, NextdaySehriTime));
+            document.getElementById("event-count-down-time").innerHTML = replaceEnglishToBanglaDigitTimeWithSeconds(getFullString(nextDataType, dhakaTimeIso, NextdaySehriTime));
 
         }
     }
 
-    function getFullString(dhakaTimeIso, eventTime) {
+    function getFullString(nextDataType, dhakaTimeIso, eventTime) {
         let fullString = "";
 
 
         let ISOstring = moment.utc(eventTime).format("YYYY-MM-DD[T]HH:mm:ss.SSS[Z]")
         let remainingTime = moment(ISOstring).diff(moment(dhakaTimeIso), 'seconds');
-        let duration = moment.duration(remainingTime, 'seconds');
+        remainingTime = Math.abs(remainingTime);
+        let duration = 0;
+
+        if (nextDataType === "todays_seheri") {
+            duration = moment.duration(remainingTime, 'seconds');
+        } else {
+
+            duration = moment.duration(remainingTime, 'seconds');
+        }
+
 
 
         let hours = duration.hours();
@@ -294,11 +307,11 @@ function init() {
         let seconds = duration.seconds();
 
         hours = hours.toString().padStart(2, '0');
-
         minutes = minutes.toString().padStart(2, '0');
         seconds = seconds.toString().padStart(2, '0');
 
         fullString = `${hours}:${minutes}:${seconds}`;
+        console.log('fullString:', fullString)
 
         return fullString;
     }
