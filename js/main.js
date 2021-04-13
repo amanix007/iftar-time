@@ -1,3 +1,4 @@
+"use strict";
 var RamdanData = [
     {
         "DATE": "2021-04-12",
@@ -159,12 +160,6 @@ var RamdanData = [
 
 var bengaliNumbers = ["০", "১", "২", "৩", "৪", "৫", "৬", "৭", "৮", "৯"];
 
-
-
-var timeType = [
-    "আজকের ইফতার",
-    "আজকের সেহেরী"
-];
 function init() {
     // 2011-10-05T14:48:00.000Z
 
@@ -173,7 +168,7 @@ function init() {
     let CurrentdhakaTimeDate = moment().tz("Asia/Dhaka");
     // let CurrentdhakaTimeDate = moment("2021-04-13T19:33:00.000Z");
     let CurrentdhakaTimeDateString = moment().format("YYYY-MM-DD");
-    console.log('CurrentdhakaTimeDateString:', CurrentdhakaTimeDateString)
+    
 
 
     let TodaySehriTime = "";
