@@ -170,8 +170,8 @@ function init() {
 
     let typeShowTypelist = ["todays_seheri", "todays_iftar", "next_days_seheri"];
 
-    let CurrentdhakaTimeDate = moment().tz("Asia/Dhaka");
-    // let CurrentdhakaTimeDate = moment("2021-04-12T18:33:00.000Z");
+    // let CurrentdhakaTimeDate = moment().tz("Asia/Dhaka");
+    let CurrentdhakaTimeDate = moment("2021-04-13T19:33:00.000Z");
     let CurrentdhakaTimeDateString = moment().format("YYYY-MM-DD");
     console.log('CurrentdhakaTimeDateString:', CurrentdhakaTimeDateString)
 
@@ -209,13 +209,9 @@ function init() {
 
         if (moment(CurrentdhakaTimeDate).isBefore(TodaySehriTime, 'second') && moment(CurrentdhakaTimeDate).isBefore(TodayIftarTime, 'second')) {
             nextDataType = "todays_seheri";
-        }
-
-        if (moment(CurrentdhakaTimeDate).isAfter(TodaySehriTime, 'second') && moment(CurrentdhakaTimeDate).isBefore(TodayIftarTime, 'second')) {
+        } else if (moment(CurrentdhakaTimeDate).isAfter(TodaySehriTime, 'second') && moment(CurrentdhakaTimeDate).isBefore(TodayIftarTime, 'second')) {
             nextDataType = "todays_iftar";
-        }
-
-        if (moment(CurrentdhakaTimeDate).isBefore(NextdaySehriTime, 'second')) {
+        } else if (moment(CurrentdhakaTimeDate).isBefore(NextdaySehriTime, 'second')) {
             nextDataType = "next_days_seheri";
         }
 
