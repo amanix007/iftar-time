@@ -162,48 +162,15 @@ var RamdanData = [
 var bengaliNumbers = ["০", "১", "২", "৩", "৪", "৫", "৬", "৭", "৮", "৯"];
 
 
-let dummyTime = moment.utc("2021-04-13T01:00:00.000Z");
+let dummyTime = moment.utc("2021-04-13T01:00:00.000");
 
 function init() {
 
-    let CurrentdhakaTimeDate = moment().tz("Asia/Dhaka");
-    // let CurrentdhakaTimeDate = dummyTime;
-
-
-
-    let CurrentdhakaTimeDateString = CurrentdhakaTimeDate.format("YYYY-MM-DD");
-
-
-
-    let TodaySehriTime = "";
-    let TodayIftarTime = "";
-
-    let NextdaySehriTime = "";
-    let NextdayIftarTime = "";
-
-
-    let RamadanNumber = 0;
-
-
-
-    for (let i = 0; i < RamdanData.length; i++) {
-        let data = RamdanData[i];
-        let nextDaydata = RamdanData[i + 1];
-        if (data.DATE === CurrentdhakaTimeDateString) {
-
-            TodaySehriTime = `${data.DATE}T${data.SEHR}:00.000Z`;
-            TodayIftarTime = `${data.DATE}T${data.IFTAR}:00.000Z`;
-
-            NextdaySehriTime = `${nextDaydata.DATE}T${nextDaydata.SEHR}:00.000Z`;
-            NextdayIftarTime = `${nextDaydata.DATE}T${nextDaydata.IFTAR}:00.000Z`;
-            RamadanNumber = i;
-        }
-    }
 
 
 
 
-    function getNextTimeType() {
+    function getNextTimeType(CurrentdhakaTimeDate, TodaySehriTime, TodayIftarTime, NextdayIftarTime, NextdaySehriTime) {
         let nextDataType = "todays_seheri";
 
         if (moment(CurrentdhakaTimeDate).isBefore(TodaySehriTime, 'second') && moment(CurrentdhakaTimeDate).isBefore(TodayIftarTime, 'second')) {
@@ -251,20 +218,46 @@ function init() {
 
     }
 
-    var interval = 1000;
 
     function injectDateToDom() {
-
-        let nextDataType = getNextTimeType();
-        console.log('nextDataType:', nextDataType)
-
+        
         let CurrentdhakaTimeDate = moment().tz("Asia/Dhaka");
-        // let CurrentdhakaTimeDate = dummyTime;
+        //  CurrentdhakaTimeDate = dummyTime;
+        
+        let CurrentdhakaTimeDateString = CurrentdhakaTimeDate.format("YYYY-MM-DD");
 
 
-        let dhakaTimeIso = moment(CurrentdhakaTimeDate).format("YYYY-MM-DD[T]HH:mm:ss.SSS[Z]")
+        let TodaySehriTime = "";
+        let TodayIftarTime = "";
+
+        let NextdaySehriTime = "";
+        let NextdayIftarTime = "";
 
 
+        let RamadanNumber = 0;
+
+
+
+        for (let i = 0; i < RamdanData.length; i++) {
+            let data = RamdanData[i];
+            let nextDaydata = RamdanData[i + 1];
+            if (data.DATE === CurrentdhakaTimeDateString) {
+
+                TodaySehriTime = `${data.DATE}T${data.SEHR}:00.000`;
+                TodayIftarTime = `${data.DATE}T${data.IFTAR}:00.000`;
+
+                NextdaySehriTime = `${nextDaydata.DATE}T${nextDaydata.SEHR}:00.000`;
+                NextdayIftarTime = `${nextDaydata.DATE}T${nextDaydata.IFTAR}:00.000`;
+                RamadanNumber = i;
+            }
+        }
+
+
+
+        let nextDataType = getNextTimeType(CurrentdhakaTimeDate, TodaySehriTime, TodayIftarTime, NextdayIftarTime, NextdaySehriTime);
+        // console.log('nextDataType:', nextDataType)
+
+        let dhakaTimeIso = moment(CurrentdhakaTimeDate).format("YYYY-MM-DD[T]HH:mm:ss.SSS")
 
 
         if (nextDataType === "todays_seheri") {
@@ -288,7 +281,7 @@ function init() {
         let fullString = "";
 
 
-        let ISOstring = moment.utc(eventTime).format("YYYY-MM-DD[T]HH:mm:ss.SSS[Z]")
+        let ISOstring = moment.utc(eventTime).format("YYYY-MM-DD[T]HH:mm:ss.SSS")
         let remainingTime = moment(ISOstring).diff(moment(dhakaTimeIso), 'seconds');
         remainingTime = Math.abs(remainingTime);
         let duration = 0;
@@ -311,7 +304,6 @@ function init() {
         seconds = seconds.toString().padStart(2, '0');
 
         fullString = `${hours}:${minutes}:${seconds}`;
-        console.log('fullString:', fullString)
 
         return fullString;
     }
